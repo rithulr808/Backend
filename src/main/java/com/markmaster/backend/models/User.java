@@ -33,4 +33,11 @@ public class User extends AbstractBaseEntity{
     public void setPassword(String password) {
         this.password = password;
     }
+    public Course getRegisteredCourse() {
+        return registeredCourse;
+    }
+
+    public void setRegisteredCourse(Course registeredCourse) {
+        this.registeredCourse = registeredCourse;
+    }
 }

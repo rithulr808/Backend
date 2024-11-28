@@ -17,14 +17,12 @@ import java.util.Optional;
 @RequestMapping("/api/course")
 public class CourseController {
     private final CourseService courseService;
-//    private final DepartmentService departmentService;
     private final HttpResponseMessageHandler httpResponseUpdater;
 
     @Autowired
     public CourseController(CourseService courseService, HttpResponseMessageHandler httpResponseUpdater) {
         this.courseService = courseService;
         this.httpResponseUpdater = httpResponseUpdater;
-//        this.departmentService = departmentService;
     }
 
     @GetMapping("/all")
@@ -45,20 +43,10 @@ public class CourseController {
     ResponseEntity<Map<String, Object>> create(@RequestBody CourseDepartmentDTO dto) throws HttpMessageNotReadableException {
         System.out.println(dto.toString());
         Course course = dto.getCourse();
-////        Department department = dto.getDepartment();
-//        if (department == null) {
-//            return httpResponseUpdater.updateHttpResponse("Department not found", HttpStatus.NOT_FOUND);
-//        }
+
         if (course == null) {
             return httpResponseUpdater.updateHttpResponse("Course not found", HttpStatus.NOT_FOUND);
         }
-//        Optional<Department> departmentOptional = Optional.ofNullable(departmentService.findById(department.getId()));
-//        if (departmentOptional.isPresent()) {
-//            course.setDepartment(department);
-//            courseService.save(course);
-//            System.out.println(department.getDepartmentName());
-//            return httpResponseUpdater.updateHttpResponse("Course with has been created successfully", HttpStatus.OK);
-//        }
         return httpResponseUpdater.updateHttpResponse("Department not found", HttpStatus.NOT_FOUND);
     }
 
@@ -68,14 +56,8 @@ public class CourseController {
 
         if (courseOptional.isPresent()) {
             Course course = dto.getCourse();
-//            Department department = dto.getDepartment();
 
             courseService.updateById(course, id);
-
-//            if (department != null) {
-//                courseService.updateParentDepartment(course.getId());
-//            }
-
             return httpResponseUpdater.updateHttpResponse("Course with id: " + id + " has been updated successfully", HttpStatus.OK);
         }
 

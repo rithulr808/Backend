@@ -37,6 +37,23 @@ public class UserDetailsController {
         return httpResponseUpdater.updateHttpResponse("User not found", HttpStatus.NOT_FOUND);
     }
 
+    @PostMapping("/{userId}/register-course/{courseId}")
+    public ResponseEntity<Map<String, Object>> registerCourse(
+            @PathVariable int userId,
+            @PathVariable Long courseId) {
+        try {
+            User updatedUser = userDetailsService.registerCourseForUser(userId, courseId);
+            return httpResponseUpdater.updateHttpResponse(
+                    "Course registered successfully",
+                    HttpStatus.OK,
+                    updatedUser
+            );
+        } catch (RuntimeException e) {
+            return httpResponseUpdater.updateHttpResponse(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
+
     @PostMapping("/")
     public ResponseEntity<Map<String, Object>> createUser(@RequestBody User userDetails) {
         User savedUser = userDetailsService.save(userDetails);

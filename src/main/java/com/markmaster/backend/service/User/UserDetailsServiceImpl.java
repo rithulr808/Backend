@@ -36,7 +36,9 @@
 //}
 package com.markmaster.backend.service.User;
 
+import com.markmaster.backend.models.Course;
 import com.markmaster.backend.models.User;
+import com.markmaster.backend.repository.CourseRepo;
 import com.markmaster.backend.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -50,10 +52,24 @@ import java.util.Optional;
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
     private final UserRepo userRepo;
+    private CourseRepo courseRepo;
 
     @Autowired
     public UserDetailsServiceImpl(UserRepo userRepo) {
         this.userRepo = userRepo;
+    }
+
+    public User registerCourseForUser(int userId, long courseId) {
+        Optional<User> userOptional = userRepo.findById(userId);
+        Optional<Course> courseOptional = courseRepo.findById(courseId);
+
+        if (userOptional.isPresent() && courseOptional.isPresent()) {
+            User user = userOptional.get();
+            user.setRegisteredCourse(courseOptional.get());
+            return userRepo.save(user); // Save the updated user
+        }
+
+        throw new RuntimeException("User or Course not found");
     }
 
     // Method required by Spring Security
